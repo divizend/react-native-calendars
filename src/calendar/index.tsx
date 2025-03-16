@@ -38,6 +38,8 @@ export interface CalendarProps extends CalendarHeaderProps, DayProps {
   hideExtraDays?: boolean;
   /** Always show six weeks on each month (only when hideExtraDays = false) */
   showSixWeeks?: boolean;
+  /** Hide weekends */
+  hideWeekends?: boolean;
   /** Handler which gets executed on day press */
   onDayPress?: (date: DateData) => void;
   /** Handler which gets executed on day long press */
@@ -94,9 +96,9 @@ const Calendar = (props: CalendarProps & ContextProp) => {
     style: propsStyle
   } = props;
   const [currentMonth, setCurrentMonth] = useState(current || initialDate ? parseDate(current || initialDate) : new XDate());
-  const style = useRef(styleConstructor(theme));
   const header = useRef();
   const weekNumberMarking = useRef({disabled: true, disableTouchEvent: true});
+  const style = useMemo(() => ({ current: styleConstructor(theme)}), [theme]);
 
   useEffect(() => {
     if (initialDate) {
@@ -221,6 +223,11 @@ const Calendar = (props: CalendarProps & ContextProp) => {
 
     if (props.showWeekNumbers) {
       week.unshift(renderWeekNumber(days[days.length - 1].getWeek()));
+    }
+
+    if(props.hideWeekends) {
+      week.shift();
+      week.pop();
     }
 
     return (

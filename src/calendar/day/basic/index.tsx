@@ -1,8 +1,8 @@
-import React, {Fragment, useCallback, useRef} from 'react';
-import {TouchableOpacity, Text, View, ViewProps} from 'react-native';
-import {xdateToData} from '../../../interface';
-import {Theme, DayState, MarkingTypes, DateData} from '../../../types';
-import Marking, {MarkingProps} from '../marking';
+import React, { Fragment, useCallback, useMemo } from 'react';
+import { Text, TouchableOpacity, View, ViewProps } from 'react-native';
+import { xdateToData } from '../../../interface';
+import { DateData, DayState, MarkingTypes, Theme } from '../../../types';
+import Marking, { MarkingProps } from '../marking';
 import styleConstructor from './style';
 
 
@@ -47,7 +47,7 @@ const BasicDay = (props: BasicDayProps) => {
     testID
   } = props;
   const dateData = date ? xdateToData(date) : undefined;
-  const style = useRef(styleConstructor(theme));
+  const style = useMemo(() => ({current: styleConstructor(theme)}), [theme]);
 
   const _marking = marking || {};
   const isSelected = _marking.selected || state === 'selected';

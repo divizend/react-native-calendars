@@ -42,6 +42,8 @@ export interface CalendarHeaderProps {
   hideDayNames?: boolean;
   /** Hide month navigation arrows */
   hideArrows?: boolean;
+  /** Hide weekends */
+  hideWeekends?: boolean;
   /** Replace default arrows with custom ones (direction = 'left' | 'right') */
   renderArrow?: (direction: Direction) => ReactNode;
   /** Handler which gets executed when press arrow icon left. It receive a callback can go back month */
@@ -117,7 +119,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
   const numberOfDaysCondition = useMemo(() => {
     return numberOfDays && numberOfDays > 1;
   }, [numberOfDays]);
-  const style = useRef(styleConstructor(theme));
+  const style = useMemo(() => ({current: styleConstructor(theme)}), [theme]);
   const headerStyle = useMemo(() => {
     return [style.current.header, numberOfDaysCondition ? style.current.partialHeader : undefined];
   }, [numberOfDaysCondition]);
@@ -182,6 +184,10 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
 
     return dayNames.map((day: string, index: number) => {
       const dayStyle = [style.current.dayHeader];
+      
+      if(props.hideWeekends && (index === 0 || index === 6)) {
+        return null;
+      }
 
       if (includes(disabledDaysIndexes, index)) {
         dayStyle.push(style.current.disabledDayHeader);
@@ -198,7 +204,7 @@ const CalendarHeader = forwardRef((props: CalendarHeaderProps, ref) => {
         </Text>
       );
     });
-  }, [firstDay, current, numberOfDaysCondition, numberOfDays, disabledDaysIndexes]);
+  }, [firstDay, current, numberOfDaysCondition, numberOfDays, disabledDaysIndexes, props.hideWeekends, style]);
 
   const _renderHeader = () => {
     const webProps = Platform.OS === 'web' ? {'aria-level': webAriaLevel} : {};
