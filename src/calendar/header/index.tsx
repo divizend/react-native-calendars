@@ -1,7 +1,7 @@
 import includes from 'lodash/includes';
 import XDate from 'xdate';
 
-import React, {Fragment, ReactNode, useCallback, useMemo, forwardRef, useImperativeHandle, useRef} from 'react';
+import React, {Fragment, ReactNode, useCallback, useMemo, forwardRef, useImperativeHandle} from 'react';
 import {
   ActivityIndicator,
   Platform,
