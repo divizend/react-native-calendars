@@ -15,6 +15,7 @@
     "test:perf": "TEST_RUNNER_ARGS='--testMatch **/*.perf.js' reassure measure",
     "unit": "jest",
     "lint": "eslint src/ example/src --ext .tsx,.ts,.js",
+    "prepare": "yarn build:ts",
     "release": "node ./scripts/release.js",
     "start": "react-native start",
     "ios": "react-native run-ios",
